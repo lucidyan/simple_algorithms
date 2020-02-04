@@ -62,7 +62,7 @@ $$(n_a+1)(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(n_b+1)(^{n_b}\_{c_b})f_{b
 
 Now that we have the joint posterior distribution of $f_a$ and $f_b$, we can easily find the answer to our original question – we just need to integrate over the region where $f_a<f_b$ ! In other words:
 
-$$Pr(f_{a+} \lt f_{b+})=\int_0^1\int_{f_a+}^1\frac{(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(^{n_b}_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}}{\frac{1}{(n_a+1)(n_b+1)}}$$
+$$Pr(f_{a+} \lt f_{b+})=\int_0^1\int_{f_a+}^1\frac{(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(^{n_b}\_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}}{\frac{1}{(n_a+1)(n_b+1)}}$$
 
 $$=\frac{(n_a+1)!}{c_a!(n_a-c_a)!}\frac{(n_b+1)!}{c_b!(n_b-c_b)!}\int_0^1f_{a+}^{c_a}(1-f_{a+})^{n_a-c_a}\int_{f_a+}^1f_{b+}^{c_b}(1-f_{b+})^{n_b-c_b}$$
 
