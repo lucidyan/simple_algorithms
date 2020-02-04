@@ -42,13 +42,13 @@ The easiest one to write is the joint prior distribution for $f_a+$ and $f_b+$: 
 
 $$Pr(f_a+,f_b+|n_a,n_b)=1$$
 
-Next we have the probability of the observed data – $Pr(Pr(c_a,c_b|n_a,n_b))$ Pr(cacbnanb). For a given conversion rate, the probability distribution for c conversions in n trials is $(^n_c)f^c_{+}f^{n-c}_-$. So, we need to integrate the joint distribution over all possible values of f:
+Next we have the probability of the observed data – $Pr(Pr(c_a,c_b|n_a,n_b))$ . For a given conversion rate, the probability distribution for c conversions in n trials is $(^n_c)f^c_{+}f^{n-c}_-$. So, we need to integrate the joint distribution over all possible values of f:
 
-$$\int_0^1(^{n_a}_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}df_a \int_0^1(^{n_b}_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}df_b$$
-
-$$=(^{n_a}_{c_a})\frac{c_a!(n_a-c_a)!}{(n_a+1)!}(^{n_b}_{c_b})\frac{c_b!(n_b-c_b)!}{(n_b+1)!}$$
-
-$$=\frac{1}{(n_a+1)(n_b+1)}$$
+$$
+\int_0^1(^{n_a}_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}df_a \int_0^1(^{n_b}_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}df_b
+=(^{n_a}_{c_a})\frac{c_a!(n_a-c_a)!}{(n_a+1)!}(^{n_b}_{c_b})\frac{c_b!(n_b-c_b)!}{(n_b+1)!}
+=\frac{1}{(n_a+1)(n_b+1)}
+$$
 
 The final component is called the likelihood:
 
