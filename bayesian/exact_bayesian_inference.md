@@ -11,7 +11,7 @@ For simplicity, I’m going to talk about the simplest case, which is when only 
 
 To review, the traditional way to answer this question would be to assume a Gaussian distribution, since it is a good approximation of the binomial distribution with a large enough sample, and use the null hypothesis: $f_a=f_b$, reflecting our prior belief that the two alternatives will have equal conversion rates. We would then use a two sample Z-test to determine if our results differ significantly from what the null hypothesis predicts:
 
-$$z=\frac{f_a-f_b}{\sqrt{f_a\frac{1-f_a}{n_a}+f_b\frac{1-f_b}{n_b}}}$$
+$$z = \frac{f_a - f_b}{\sqrt{\frac{f_a \left({1 - f_a}\right)}{n_a} + \frac{f_b \left({1 - f_b}\right)}{n_b} }} $$
 (n.b. keep in mind that the null hypothesis assumes our two conversion frequencies are equal).
 
 Finally, using this value we look in our handy Standard normal table and find the p-value, to determine the probability that we got this result by chance, assuming the truth of the null hypothesis. For example, let’s say we look up the value in the table and see that our p-value is 0.04. This means that if we were to run our experiment a large number of times, and the null hypothesis is true, about 4% of those times we would see results at least as extreme as the ones we recorded. Since a p-value of 0.05 is typically accepted as the threshold for statistical significance, we would conclude that the null hypothesis can be rejected – there is a statistically significant difference between $f_a$ and $f_b$.
@@ -32,36 +32,37 @@ In part one we learned how to determine whether one alternative is better than a
 
 Enter Bayes Theorem. Using this magical piece of mathematics, we can actually give an exact answer to the question, “What is the probability, given these results, that A has a higher conversion frequency than B?” In the following equations, for convenience, I will refer to the probability of conversion $f_a$ as $f_a+$, and the probability of not converting, $1–f_a+$, as $f_a−$.
 
-The value we are interested in is the posterior probability distribution $Pr(f_a,f_b|D)$ of $f_a+$ and $f_b+$, given the observed data $D \equiv \{c_a,c_b,n_a,n_b\}$:
+The value we are interested in is the posterior probability distribution $Pr(f_{a+},f_{b+}|D)$ of $f_{a+}$ and $f_{b+}$, given the observed data $D \equiv \{c_a,c_b,n_a,n_b\}$:
 
-$$Pr(f_a,f_b|D)=\frac{Pr(f_a,f_b|n_a,n_b)Pr(c_a,c_b|f_a+,f_b+,n_a,n_b)}{Pr(c_a,c_b|n_a,n_b)}$$
+$$Pr(f_{a+},f_{b+}|D)=\frac{Pr(f_{a+},f_{b+}|n_a,n_b)Pr(c_a,c_b|f_{a+},f_{b+},n_a,n_b)}{Pr(c_a,c_b|n_a,n_b)}$$
 
 Ok, so how do we actually use this? Let’s start by writing down the probability distributions that we know.
 
-The easiest one to write is the joint prior distribution for $f_a+$ and $f_b+$: It’s uniformly 1, reflecting our initial belief that all values of $f_a+$ and $f_b+$ are equally likely:
+The easiest one to write is the joint prior distribution for $f_{a+}$ and $f_{b+}$: It’s uniformly 1, reflecting our initial belief that all values of $f_{a+}$ and $f_{b+}$ are equally likely:
 
-$$Pr(f_a+,f_b+|n_a,n_b)=1$$
+$$Pr(f_{a+},f_{b+}|n_a,n_b)=1$$
 
-Next we have the probability of the observed data – $Pr(Pr(c_a,c_b|n_a,n_b))$ . For a given conversion rate, the probability distribution for c conversions in n trials is $(^n_c)f^c_{+}f^{n-c}_-$. So, we need to integrate the joint distribution over all possible values of $f$:
+Next we have the probability of the observed data – $Pr(c_a,c_b|n_a,n_b)$ . For a given conversion rate, the probability distribution for $c$ conversions in $n$ trials is ${n \choose c} {f_+}^c {f_-}^{n-c}$. So, we need to integrate the joint distribution over all possible values of $f$:
 
-$$ \int_0^1(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}df_a \int_0^1(^{n_b}\_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}df_b= $$
+$$ \int_0^1 {{n_a \choose c_a} {f_{a+}}^{c_a} {f_{a-}}^{n_a-c_a}\,df_a} \int_0^1 {{n_b \choose c_b} {f_{b+}}^{c_b} {f_{b-}^{n_b-c_b}}\,df_b}= $$
 
-$$ =(^{n_a}\_{c_a})\frac{c_a!(n_a-c_a)!}{(n_a+1)!}(^{n_b}\_{c_b})\frac{c_b!(n_b-c_b)!}{(n_b+1)!}= $$
+$$ ={n_a \choose c_a} \frac{{c_a}! \left({n_a-c_a}\right)!}{\left({n_a+1} \right)!} {n_b \choose c_b} \frac{{c_b}! \left({n_b-c_b}\right)!}{\left({n_b+1} \right)!}= $$
 
-$$ =\frac{1}{(n_a+1)(n_b+1)} $$
+$$ =\frac{1}{\left(n_a+1\right)\left(n_b+1\right)} $$
 
 The final component is called the likelihood:
 
-$$Pr(c_a,c_b|D)=(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(n_b+1)f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}$$
+$$Pr(c_a, c_b | D) = {n_a \choose c_a} f_{a+}^{c_a} f_{a-}^{n_a-c_a} {n_b \choose c_b} f_{b+}^{c_b} f_{b-}^{n_b-c_b}$$
 
 Putting it all together, we have:
 
-$$(n_a+1)(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(n_b+1)(^{n_b}\_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}$$
+$$\left(n_a + 1\right) {n_a \choose c_a} f_{a+}^{c_a} f_{a-}^{n_a-c_a} \left(n_b + 1\right) {n_b \choose c_b} f_{b+}^{c_b} f_{b-}^{n_b-c_b}
+$$
 
 Now that we have the joint posterior distribution of $f_a$ and $f_b$, we can easily find the answer to our original question – we just need to integrate over the region where $f_a<f_b$ ! In other words:
 
-$$Pr(f_{a+} \lt f_{b+})=\int_0^1\int_{f_a+}^1\frac{(^{n_a}\_{c_a})f_{a^+}^{c_a}f_{a^-}^{n_a-c_a}(^{n_b}\_{c_b})f_{b^+}^{c_b}f_{b^-}^{n_b-c_b}}{\frac{1}{(n_a+1)(n_b+1)}}=$$
+$$Pr(f_{a+} < f_{b+}) = \int_0^1 \!\! {\int_{f_{a+}}^1 { \frac{{n_a \choose c_a} f_{a+}^{c_a} f_{a-}^{n_a-c_a} {n_b \choose c_b} f_{b+}^{c_b} f_{b-}^{n_b-c_b}}{\frac{1}{\left(n_a+1\right)\left(n_b+1\right)}} } }$$
 
-$$=\frac{(n_a+1)!}{c_a!(n_a-c_a)!}\frac{(n_b+1)!}{c_b!(n_b-c_b)!}\int_0^1f_{a+}^{c_a}(1-f_{a+})^{n_a-c_a}\int_{f_a+}^1f_{b+}^{c_b}(1-f_{b+})^{n_b-c_b}$$
+$$=\frac{(n_a+1)!}{c_a!(n_a-c_a)!}\frac{(n_b+1)!}{c_b!(n_b-c_b)!}\int_0^1f_{a+}^{c_a}(1-f_{a+})^{n_a-c_a}\int_{f_{a+}}^1f_{b+}^{c_b}(1-f_{b+})^{n_b-c_b}$$
 
 So now we’ve got a very difficult-looking integral instead of a straightforward computation like in part 1. Where do we go from here? Normal people would throw this equation into a numeric solver and get a very close approximation to the answer. However, since I can’t afford Mathematica, we’re going to have to solve this one exactly. Stay tuned for part 3 to see how.
